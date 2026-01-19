@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Danh sách sách hiện có</h2>
+<div class="row">
+    {% for book in books %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="card-text text-muted">Tác giả: {{ book.author }}</p>
+                <h6 class="text-primary">{{ book.price }} VNĐ</h6>
+                <p>Còn lại: {{ book.stock }}</p>
+
+                <a href="{% url 'add_to_cart' book.id %}" class="btn btn-success w-100">Thêm vào giỏ</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

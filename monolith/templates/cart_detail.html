@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Giỏ hàng của bạn</h2>
+
+{% if cart.cartitem_set.count > 0 %}
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Sách</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.cartitem_set.all %}
+            <tr>
+                <td>{{ item.book.title }}</td>
+                <td>{{ item.book.price }} VNĐ</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.total_price }} VNĐ</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="fw-bold">
+                <td colspan="3" class="text-end">TỔNG CỘNG:</td>
+                <td class="text-danger">{{ cart.total_price }} VNĐ</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mt-3">
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">Tiếp tục mua hàng</a>
+        <button class="btn btn-primary float-end">Thanh toán (Checkout)</button>
+    </div>
+
+{% else %}
+    <div class="alert alert-info">
+        Giỏ hàng của bạn đang trống. <a href="{% url 'book_list' %}">Mua ngay!</a>
+    </div>
+{% endif %}
+
+{% endblock %}
