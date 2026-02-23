@@ -1,18 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 class="mb-4">Danh sách sách hiện có</h2>
-<div class="row">
-    {% for book in books %}
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">{{ book.title }}</h5>
-                <p class="card-text text-muted">Tác giả: {{ book.author }}</p>
-                <h6 class="text-primary">{{ book.price }} VNĐ</h6>
-                <p>Còn lại: {{ book.stock }}</p>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Discover Your Next Great Read</h1>
+        <p class="hero-subtitle">Explore our massive collection of books across all genres, carefully curated just for
+            you.</p>
+        <a href="#books-grid" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
+            <i class="bi bi-bookshelf me-2"></i> Browse Collection
+        </a>
+    </div>
+</div>
 
-                <a href="{% url 'add_to_cart' book.id %}" class="btn btn-success w-100">Thêm vào giỏ</a>
+<div class="d-flex justify-content-between align-items-end mb-4" id="books-grid">
+    <h2 class="mb-0">Featured Books</h2>
+    <span class="text-muted fw-medium fs-6">{{ books|length }} books available</span>
+</div>
+
+<div class="row g-4">
+    {% for book in books %}
+    <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="card h-100 border-0">
+            <!-- Book Cover Placeholder (Using a generic gradient or icon) -->
+            <div class="bg-light w-100 d-flex align-items-center justify-content-center"
+                style="height: 200px; border-bottom: 1px solid var(--border-color);">
+                <i class="bi bi-book text-muted opacity-50" style="font-size: 4rem;"></i>
+            </div>
+
+            <div class="card-body d-flex flex-column">
+                <div class="mb-2">
+                    <span
+                        class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2 py-1 fs-xs fw-semibold">Bestseller</span>
+                </div>
+                <h5 class="card-title text-truncate" title="{{ book.title }}">{{ book.title }}</h5>
+                <p class="card-text text-muted mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-pen"></i> {{ book.author }}
+                </p>
+
+                <div class="mt-auto pt-3 border-top d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="price-tag">${{ book.price }}</div>
+                        <div class="stock-badge mt-1">
+                            <i class="bi bi-box-seam"></i> {{ book.stock }} in stock
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0 p-3 pt-0">
+                <a href="{% url 'add_to_cart' book.id %}"
+                    class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-cart-plus"></i> Thêm vào giỏ
+                </a>
             </div>
         </div>
     </div>

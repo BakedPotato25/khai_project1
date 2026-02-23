@@ -1,45 +1,92 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 class="mb-4">Giỏ hàng của bạn</h2>
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h2 class="mb-0 fw-bold"><i class="bi bi-cart3 me-2 text-primary"></i>Giỏ hàng của bạn</h2>
+    </div>
+</div>
 
 {% if cart.cartitem_set.count > 0 %}
-    <table class="table table-bordered table-hover">
-        <thead class="table-light">
-            <tr>
-                <th>Sách</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cart.cartitem_set.all %}
-            <tr>
-                <td>{{ item.book.title }}</td>
-                <td>{{ item.book.price }} VNĐ</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.total_price }} VNĐ</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr class="fw-bold">
-                <td colspan="3" class="text-end">TỔNG CỘNG:</td>
-                <td class="text-danger">{{ cart.total_price }} VNĐ</td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <div class="mt-3">
-        <a href="{% url 'book_list' %}" class="btn btn-secondary">Tiếp tục mua hàng</a>
-        <button class="btn btn-primary float-end">Thanh toán (Checkout)</button>
+<div class="row g-4">
+    <!-- Cart Items Table -->
+    <div class="col-lg-8">
+        <div class="table-responsive bg-white rounded-4 shadow-sm border">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Sách</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th class="text-end pe-4">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody class="border-top-0">
+                    {% for item in cart.cartitem_set.all %}
+                    <tr>
+                        <td class="ps-4 py-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                    style="width: 48px; height: 64px;">
+                                    <i class="bi bi-book text-muted"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-truncate" style="max-width: 200px;">{{ item.book.title }}</h6>
+                                    <small class="text-muted"><i class="bi bi-pen me-1"></i>{{ item.book.author
+                                        }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fw-medium text-muted">${{ item.book.price }}</td>
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 fs-6">
+                                {{ item.quantity }}
+                            </span>
+                        </td>
+                        <td class="text-end pe-4 fw-bold text-primary">${{ item.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <!-- Cart Summary -->
+    <div class="col-lg-4">
+        <div class="cart-summary sticky-top" style="top: 100px;">
+            <h4 class="fw-bold mb-4">Tổng cộng</h4>
+
+            <div class="d-flex justify-content-between mb-3 text-muted">
+                <span>Tạm tính ({{ cart.cartitem_set.count }} sản phẩm)</span>
+                <span class="fw-medium text-dark">${{ cart.total_price }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3 text-muted border-bottom pb-4">
+                <span>Phí giao hàng</span>
+                <span class="text-success fw-medium">Miễn phí</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4 pt-2">
+                <span class="fs-5 fw-bold">Tổng thanh toán</span>
+                <span class="fs-3 fw-bold text-danger">${{ cart.total_price }}</span>
+            </div>
+
+            <button
+                class="btn btn-primary w-100 btn-lg rounded-pill shadow-sm mb-3 d-flex align-items-center justify-content-center gap-2">
+                Thanh toán <i class="bi bi-arrow-right"></i>
+            </button>
+            <a href="{% url 'book_list' %}" class="btn btn-outline-secondary w-100 rounded-pill">Tiếp tục mua hàng</a>
+        </div>
+    </div>
+</div>
 
 {% else %}
-    <div class="alert alert-info">
-        Giỏ hàng của bạn đang trống. <a href="{% url 'book_list' %}">Mua ngay!</a>
-    </div>
+<div class="text-center py-5 my-5 bg-white rounded-4 shadow-sm border">
+    <i class="bi bi-cart-x text-muted mb-3" style="font-size: 4rem;"></i>
+    <h3 class="fw-bold mb-3">Giỏ hàng của bạn đang trống</h3>
+    <p class="text-muted mb-4">Hãy thêm vài cuốn sách thú vị vào giỏ hàng ngay nhé!</p>
+    <a href="{% url 'book_list' %}" class="btn btn-primary rounded-pill px-5 py-2 shadow-sm">
+        <i class="bi bi-shop me-2"></i> Mua sắm ngay
+    </a>
+</div>
 {% endif %}
-
 {% endblock %}

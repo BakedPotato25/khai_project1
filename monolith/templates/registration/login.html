@@ -1,9 +1,47 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-<h2>Đăng nhập</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+<div class="auth-wrapper d-flex justify-content-center align-items-center">
+    <div class="auth-card w-100" style="max-width: 450px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-person-circle text-primary mb-3" style="font-size: 3rem;"></i>
+            <h3 class="fw-bold">Welcome Back</h3>
+            <p class="text-muted">Please enter your details to sign in.</p>
+        </div>
+
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label fw-medium">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                <small class="form-text text-muted helptext">{{ field.help_text|safe }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label text-muted fs-sm" for="rememberMe">Remember me</label>
+                </div>
+                <a href="#" class="text-primary text-decoration-none fs-sm fw-medium">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold shadow-sm mb-3">
+                Sign In
+            </button>
+            <p class="text-center text-muted fs-sm">
+                Don't have an account? <a href="{% url 'register' %}"
+                    class="fw-bold text-primary text-decoration-none">Sign up</a>
+            </p>
+        </form>
+    </div>
+</div>
 {% endblock %}
